@@ -29,12 +29,12 @@
 </div>
 
 <div class="container">
+    <%
+        List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
+        if (cartItems != null && !cartItems.isEmpty()) {
+    %>
     <div class="cart-layout">
         <div class="cart-items-container">
-            <%
-                List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
-                if (cartItems != null && !cartItems.isEmpty()) {
-            %>
             <% for (CartItem item : cartItems) { %>
             <div class="cart-item">
                 <div class="item-image">
@@ -63,15 +63,8 @@
                 </form>
             </div>
             <% } %>
-            <% } else { %>
-            <div class="empty-cart">
-                <h2>Your cart is currently empty.</h2>
-                <a href="${pageContext.request.contextPath}/products" class="btn btn-primary" style="margin-top: var(--spacing-md);">Shop Now</a>
-            </div>
-            <% } %>
         </div>
 
-        <% if (cartItems != null && !cartItems.isEmpty()) { %>
         <div class="cart-summary">
             <h3>Order Summary</h3>
 
@@ -108,8 +101,13 @@
                 </form>
             </div>
         </div>
-        <% } %>
     </div>
+    <% } else { %>
+    <div class="empty-cart" style="max-width: 600px; margin: 0 auto; margin-bottom: var(--spacing-xxl);">
+        <h2>Your cart is currently empty.</h2>
+        <a href="${pageContext.request.contextPath}/products" class="btn btn-primary" style="margin-top: var(--spacing-md);">Shop Now</a>
+    </div>
+    <% } %>
 </div>
 
 <jsp:include page="/WEB-INF/views/partials/footer.jsp" />

@@ -13,133 +13,7 @@
     
     <!-- Global CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=1.1">
-
-    <style>
-        /* Page-specific styles for Home */
-        .hero-section {
-            display: flex;
-            align-items: center;
-            background-color: var(--bg-secondary);
-            margin: var(--spacing-md) var(--spacing-lg);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            min-height: 500px;
-        }
-
-        .hero-content {
-            flex: 1;
-            padding: var(--spacing-xxl) var(--spacing-xl);
-            max-width: 500px;
-        }
-
-        .hero-title {
-            font-size: 48px;
-            margin-bottom: var(--spacing-md);
-            letter-spacing: -0.5px;
-        }
-
-        .hero-subtitle {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .hero-image {
-            flex: 1.2;
-            height: 100%;
-            min-height: 500px;
-            background-image: url('https://res.cloudinary.com/dbpl94opl/image/upload/v1777211160/Gemini_Generated_Image_7uac5r7uac5r7uac_uiknst.png');
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Featured Section */
-        .featured-section {
-            padding: var(--spacing-xxl) 0;
-        }
-
-        .section-header {
-            margin-bottom: var(--spacing-xl);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .section-title {
-            font-size: 24px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: var(--font-body);
-            font-weight: 400;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: var(--spacing-lg);
-        }
-
-        .product-card {
-            display: flex;
-            background: var(--bg-secondary);
-            border-radius: var(--border-radius);
-            padding: var(--spacing-md);
-            gap: var(--spacing-md);
-        }
-
-        .product-card-img-wrap {
-            width: 100px;
-            height: 120px;
-            background: var(--bg-white);
-            border-radius: 4px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .product-card-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-card-title {
-            font-size: 16px;
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .product-card-desc {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: auto;
-        }
-
-        .btn-add {
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            align-self: flex-start;
-            margin-top: var(--spacing-sm);
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                flex-direction: column-reverse;
-            }
-            .hero-image {
-                width: 100%;
-                min-height: 300px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/store.css?v=1.0">
 </head>
 <body>
 
@@ -163,7 +37,7 @@
         
         <div class="product-grid">
             <!-- Mock Product 1 -->
-            <div class="product-card">
+            <div class="product-card-small">
                 <div class="product-card-img-wrap">
                     <img src="https://images.unsplash.com/photo-1559525839-b184a4d698c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Coffee" style="max-height:100%; max-width:100%; object-fit:contain;">
                 </div>
@@ -175,7 +49,7 @@
             </div>
 
             <!-- Mock Product 2 -->
-            <div class="product-card">
+            <div class="product-card-small">
                 <div class="product-card-img-wrap">
                     <img src="https://images.unsplash.com/photo-1594808381830-4e3d3663a75d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Tea" style="max-height:100%; max-width:100%; object-fit:contain;">
                 </div>
@@ -187,7 +61,7 @@
             </div>
 
             <!-- Mock Product 3 -->
-            <div class="product-card">
+            <div class="product-card-small">
                 <div class="product-card-img-wrap">
                     <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Kombucha" style="max-height:100%; max-width:100%; object-fit:contain;">
                 </div>

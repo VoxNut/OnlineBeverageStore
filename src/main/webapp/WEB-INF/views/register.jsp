@@ -12,74 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     
     <!-- Global CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-
-    <style>
-        /* Specific tweaks for Auth pages */
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 24px 0;
-            gap: 16px;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-color);
-        }
-
-        .divider span {
-            color: var(--text-light);
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-google {
-            width: 100%;
-            padding: 13px;
-            background: var(--bg-white);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 40px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            font-family: var(--font-body);
-        }
-
-        .btn-google:hover {
-            border-color: #4285f4;
-            background: #f8faff;
-        }
-
-        .btn-google svg {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
-        .links {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .links a {
-            color: var(--accent-primary);
-            font-weight: 600;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=1.1">
 </head>
 <body>
 

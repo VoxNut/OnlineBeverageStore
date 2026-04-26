@@ -86,6 +86,117 @@ img {
     padding: 0 var(--spacing-lg);
 }
 
+@media (max-width: 768px) {
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+}
+
+/* ==========================================================================
+   Auth Pages (Login / Register)
+   ========================================================================== */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+    gap: 16px;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.divider span {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-google {
+    width: 100%;
+    padding: 13px;
+    background: var(--bg-white);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-family: var(--font-body);
+}
+
+.btn-google:hover {
+    border-color: #4285f4;
+    background: #f8faff;
+}
+
+.btn-google svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.links {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.links a {
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Error Pages
+   ========================================================================== */
+.error-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.error-content {
+    background: var(--bg-white);
+    padding: var(--spacing-xxl);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.error-content h1 {
+    font-size: 80px;
+    color: var(--error-text);
+    margin-bottom: var(--spacing-sm);
+}
+
+.error-content h2 {
+    font-family: var(--font-body);
+    font-size: 24px;
+    margin-bottom: var(--spacing-md);
+}
+
+.error-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
 /* ==========================================================================
    Navigation (Header)
    ========================================================================== */

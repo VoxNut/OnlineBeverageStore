@@ -118,12 +118,25 @@ public class User implements Serializable {
         this.photoUrl = photoUrl;
     }
 
+    public static final String ROLE_ADMIN = "admin";
+    public static final String ROLE_CUSTOMER = "customer";
+    public static final String ROLE_SHIPPER = "shipper";
+    public static final String ROLE_SHOP_OWNER = "shop_owner";
+
     public boolean isAdmin() {
-        return "admin".equals(this.role);
+        return ROLE_ADMIN.equals(this.role);
     }
 
     public boolean isCustomer() {
-        return "customer".equals(this.role);
+        return ROLE_CUSTOMER.equals(this.role);
+    }
+
+    public boolean isShipper() {
+        return ROLE_SHIPPER.equals(this.role);
+    }
+
+    public boolean isShopOwner() {
+        return ROLE_SHOP_OWNER.equals(this.role);
     }
 
     public boolean isGoogleUser() {

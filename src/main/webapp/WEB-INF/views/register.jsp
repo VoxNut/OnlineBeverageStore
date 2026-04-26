@@ -4,134 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Online Beverage Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Register - The Grindery</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 450px;
-            width: 100%;
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.5s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h1 {
-            text-align: center;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 28px;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #374151;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            background: #f9fafb;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-            background: white;
-        }
-
-        .input-hint {
-            color: #9ca3af;
-            margin-top: 5px;
-            display: block;
-            font-size: 12px;
-        }
-
-        .error-message {
-            background-color: #fef2f2;
-            color: #dc2626;
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #dc2626;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .btn-register {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 5px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-register:active {
-            transform: translateY(0);
-        }
-
-        /* Divider */
+        /* Specific tweaks for Auth pages */
         .divider {
             display: flex;
             align-items: center;
@@ -144,45 +28,38 @@
             content: '';
             flex: 1;
             height: 1px;
-            background: #e5e7eb;
+            background: var(--border-color);
         }
 
         .divider span {
-            color: #9ca3af;
+            color: var(--text-light);
             font-size: 13px;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        /* Google Sign-Up Button */
         .btn-google {
             width: 100%;
             padding: 13px;
-            background: white;
-            color: #374151;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
         }
 
         .btn-google:hover {
             border-color: #4285f4;
             background: #f8faff;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .btn-google:active {
-            transform: translateY(0);
         }
 
         .btn-google svg {
@@ -191,205 +68,123 @@
             flex-shrink: 0;
         }
 
-        .btn-google:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Loading spinner */
-        .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #e5e7eb;
-            border-top-color: #667eea;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         .links {
             text-align: center;
             margin-top: 24px;
             font-size: 14px;
-            color: #6b7280;
+            color: var(--text-secondary);
         }
 
         .links a {
-            color: #667eea;
-            text-decoration: none;
+            color: var(--accent-primary);
             font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .links a:hover {
-            color: #764ba2;
-            text-decoration: underline;
-        }
-
-        .back-home {
-            text-align: center;
-            margin-top: 16px;
-        }
-
-        .back-home a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .back-home a:hover {
-            color: #764ba2;
         }
     </style>
 </head>
 <body>
+
+<jsp:include page="/WEB-INF/views/partials/header.jsp" />
+
 <div class="container">
-    <h1>🧃 Create Account</h1>
-    <p class="subtitle">Join BeverageStore and start shopping</p>
-
-    <%
-        String error = (String) request.getAttribute("error");
-    %>
-
-    <% if (error != null) { %>
-    <div class="error-message"><%= error %></div>
-    <% } %>
-
-    <div id="google-error" class="error-message" style="display: none;"></div>
-
-    <!-- Google Sign-Up Button -->
-    <button type="button" id="googleSignUpBtn" class="btn-google" onclick="signUpWithGoogle()">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
-        <span id="googleBtnText">Sign up with Google</span>
-        <div id="googleSpinner" class="spinner"></div>
-    </button>
-
-    <div class="divider">
-        <span>or register with email</span>
-    </div>
-
-    <form method="POST" action="${pageContext.request.contextPath}/register">
-        <div class="form-group">
-            <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="fullName" required placeholder="John Doe">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Create Account</h1>
+            <p style="color: var(--text-secondary);">Join The Grindery and start shopping</p>
         </div>
 
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required placeholder="you@example.com">
+        <!-- Google Sign-Up Button -->
+        <button type="button" id="googleSignUpBtn" class="btn-google" onclick="signUpWithGoogle()">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            <span id="googleBtnText">Sign up with Google</span>
+        </button>
+
+        <div class="divider">
+            <span>or register with email</span>
         </div>
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required placeholder="••••••••" minlength="6">
-            <small class="input-hint">Minimum 6 characters</small>
+        <form method="POST" action="${pageContext.request.contextPath}/register">
+            <div class="form-group">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input type="text" id="fullName" name="fullName" class="form-control" required placeholder="John Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required placeholder="you@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required placeholder="••••••••" minlength="6">
+                <small style="color: var(--text-light); font-size: 12px; margin-top: 4px; display: block;">Minimum 6 characters</small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+        </form>
+
+        <div class="links">
+            Already have an account? <a href="${pageContext.request.contextPath}/login">Sign in here</a>
         </div>
-
-        <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="••••••••">
-        </div>
-
-        <button type="submit" class="btn-register">Create Account</button>
-    </form>
-
-    <div class="links">
-        Already have an account?
-        <a href="${pageContext.request.contextPath}/login">Sign in here</a>
-    </div>
-
-    <div class="back-home">
-        <a href="${pageContext.request.contextPath}/">← Back to Home</a>
     </div>
 </div>
 
-<!-- Firebase JS SDK (Compat mode for simplicity with JSP) -->
+<jsp:include page="/WEB-INF/views/partials/footer.jsp" />
+
+<!-- Firebase JS SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 
 <script>
-    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyDTnkGdaUarDWFLt6De6KkuSuxc9zjOJHk",
         authDomain: "online-beverage-store.firebaseapp.com",
-        projectId: "online-beverage-store",
-        storageBucket: "online-beverage-store.firebasestorage.app",
-        messagingSenderId: "888665427739",
-        appId: "1:888665427739:web:87ddb2c4a29902114c4dbe",
-        measurementId: "G-TV7SR6N282"
+        projectId: "online-beverage-store"
     };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
 
     function signUpWithGoogle() {
         const btn = document.getElementById('googleSignUpBtn');
         const btnText = document.getElementById('googleBtnText');
-        const spinner = document.getElementById('googleSpinner');
-        const errorDiv = document.getElementById('google-error');
-
-        // Disable button and show spinner
+        
         btn.disabled = true;
         btnText.textContent = 'Signing up...';
-        spinner.style.display = 'inline-block';
-        errorDiv.style.display = 'none';
 
         const provider = new firebase.auth.GoogleAuthProvider();
 
         firebase.auth().signInWithPopup(provider)
-            .then(function(result) {
-                // Get the Firebase ID token
-                return result.user.getIdToken();
-            })
-            .then(function(idToken) {
-                // Send the token to our backend for verification and user creation
-                return fetch('${pageContext.request.contextPath}/google-auth', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ idToken: idToken })
-                });
-            })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
+            .then(result => result.user.getIdToken())
+            .then(idToken => fetch('${pageContext.request.contextPath}/google-auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idToken: idToken })
+            }))
+            .then(response => response.json())
+            .then(data => {
                 if (data.success) {
-                    // Redirect to the URL provided by the backend
                     window.location.href = data.redirectUrl;
                 } else {
                     throw new Error(data.error || 'Registration failed');
                 }
             })
-            .catch(function(error) {
-                console.error('Google Sign-Up error:', error);
-
-                // Reset button state
+            .catch(error => {
                 btn.disabled = false;
                 btnText.textContent = 'Sign up with Google';
-                spinner.style.display = 'none';
-
-                // Show error message (ignore popup closed by user)
-                if (error.code !== 'auth/popup-closed-by-user' && 
-                    error.code !== 'auth/cancelled-popup-request') {
-                    errorDiv.textContent = error.message || 'Google Sign-Up failed. Please try again.';
-                    errorDiv.style.display = 'block';
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    showAlert(error.message || 'Google Sign-Up failed.', 'error');
                 }
             });
     }
 </script>
-</body>
-</html>

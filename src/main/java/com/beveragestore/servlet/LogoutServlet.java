@@ -32,8 +32,8 @@ public class LogoutServlet extends HttpServlet {
             logger.info("User logged out: {}", email);
         }
 
-        // Redirect to homepage
-        response.sendRedirect(request.getContextPath() + "/");
+        // Redirect to homepage with logout message
+        response.sendRedirect(request.getContextPath() + "/?msg=logout");
     }
 
     @Override

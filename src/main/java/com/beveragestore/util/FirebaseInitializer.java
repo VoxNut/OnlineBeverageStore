@@ -9,14 +9,14 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 
 /**
  * Singleton class to initialize Firebase Admin SDK and provide access to Firestore.
  * 
  * This class ensures that Firebase is initialized only once when the application starts.
- * The serviceAccountKey.json file should be placed in the project root or resources folder.
+ * The serviceAccountKey.json file should be placed in src/main/resources/.
  * 
  * Usage:
  *   Firestore db = FirebaseInitializer.getInstance().getFirestore();
@@ -45,15 +45,17 @@ public class FirebaseInitializer {
     }
 
     /**
-     * Initialize Firebase Admin SDK using serviceAccountKey.json
+     * Initialize Firebase Admin SDK using serviceAccountKey.json from classpath
      */
     private void initializeFirebase() {
         try {
-            // Path to your service account key JSON file
-            // This file should be in the project root or resources directory
-            String serviceAccountPath = "serviceAccountKey.json";
+            // Load service account key from classpath (src/main/resources/)
+            InputStream serviceAccount = getClass().getClassLoader()
+                    .getResourceAsStream("serviceAccountKey.json");
             
-            FileInputStream serviceAccount = new FileInputStream(serviceAccountPath);
+            if (serviceAccount == null) {
+                throw new IOException("serviceAccountKey.json not found in classpath (src/main/resources/)");
+            }
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -72,8 +74,8 @@ public class FirebaseInitializer {
             logger.info("Firestore client initialized successfully");
 
         } catch (IOException e) {
-            logger.error("Failed to initialize Firebase. Make sure serviceAccountKey.json is in the project root.", e);
-            throw new RuntimeException("Firebase initialization failed. Ensure serviceAccountKey.json is properly configured.", e);
+            logger.error("Failed to initialize Firebase. Make sure serviceAccountKey.json is in src/main/resources/.", e);
+            throw new RuntimeException("Firebase initialization failed. Ensure serviceAccountKey.json is in src/main/resources/.", e);
         }
     }
 

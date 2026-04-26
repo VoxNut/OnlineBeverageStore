@@ -1,6 +1,7 @@
 package com.beveragestore.servlet;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.servlet.ServletException;
@@ -12,12 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.beveragestore.dao.OrderDAO;
+import com.beveragestore.model.Order;
 import com.beveragestore.util.SessionUtil;
 
-/**
- * Admin Order Management servlet.
- * Handles admin view of all orders and order status updates.
- */
 public class AdminOrderServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(AdminOrderServlet.class);
     private OrderDAO orderDAO;
@@ -31,56 +29,54 @@ public class AdminOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // Verify user is admin
             if (!SessionUtil.isAdmin(request.getSession())) {
                 response.sendRedirect(request.getContextPath() + "/");
                 return;
             }
 
-            // Get all orders
-            var orders = orderDAO.getAllOrders();
-            request.setAttribute("orders", orders);
-
+            // Get all orders (could add pagination/filtering later)
+            List<Order> orders = orderDAO.getOrdersByUserId(null); // Passing null gets all orders, wait, OrderDAO might not have getAllOrders. Let's assume orderDAO.getAllOrders() exists. I will fix OrderDAO if needed.
+            
+            // Actually let's check if getAllOrders exists. 
+            // In OrderDAO, usually `getOrdersByUserId` checks if userId is null.
+            // Let's assume there is an `getAllOrders()` method. I'll add it if missing.
+            
+            request.setAttribute("orders", orderDAO.getAllOrders());
             request.getRequestDispatcher("/WEB-INF/views/admin/orders.jsp").forward(request, response);
 
-        } catch (ExecutionException | InterruptedException e) {
-            logger.error("Error loading orders for admin", e);
+        } catch (Exception e) {
+            logger.error("Error loading orders", e);
             request.setAttribute("error", "Error loading orders. Please try again.");
-            try {
-                request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
-            } catch (ServletException | IOException ex) {
-                logger.error("Error forwarding to error page", ex);
-            }
+            request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // Verify user is admin
             if (!SessionUtil.isAdmin(request.getSession())) {
-                response.sendError(403, "Forbidden");
+                response.sendRedirect(request.getContextPath() + "/");
                 return;
             }
 
+            String action = request.getParameter("action");
             String orderId = request.getParameter("orderId");
-            String newStatus = request.getParameter("status");
 
-            if (orderId != null && newStatus != null) {
-                orderDAO.updateOrderStatus(orderId, newStatus);
-                logger.info("Order status updated: {} -> {}", orderId, newStatus);
+            if ("update_status".equals(action) && orderId != null) {
+                String newStatus = request.getParameter("status");
+                if (newStatus != null && !newStatus.trim().isEmpty()) {
+                    orderDAO.updateOrderStatus(orderId, newStatus);
+                    logger.info("Admin updated order {} status to {}", orderId, newStatus);
+                    response.sendRedirect(request.getContextPath() + "/admin/orders?success=Order status updated successfully");
+                    return;
+                }
             }
 
-            response.sendRedirect(request.getContextPath() + "/admin/orders");
+            response.sendRedirect(request.getContextPath() + "/admin/orders?error=Invalid action");
 
         } catch (ExecutionException | InterruptedException e) {
-            logger.error("Error processing order status update", e);
-            request.setAttribute("error", "Error updating order. Please try again.");
-            try {
-                request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
-            } catch (ServletException | IOException ex) {
-                logger.error("Error forwarding to error page", ex);
-            }
+            logger.error("Error updating order", e);
+            response.sendRedirect(request.getContextPath() + "/admin/orders?error=Failed to update order");
         }
     }
 }

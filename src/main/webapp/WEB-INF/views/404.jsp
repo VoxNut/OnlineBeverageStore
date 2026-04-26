@@ -5,71 +5,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Page Not Found</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+    <style>
+        .error-page {
+            min-height: 70vh;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .container {
             text-align: center;
-            background: white;
-            padding: 60px 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-content {
+            background: var(--bg-white);
+            padding: var(--spacing-xxl);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
             max-width: 500px;
+            width: 100%;
         }
 
-        h1 {
-            font-size: 72px;
-            color: #ff9800;
-            margin-bottom: 20px;
+        .error-content h1 {
+            font-size: 80px;
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-sm);
         }
 
-        h2 {
-            color: #333;
-            margin-bottom: 15px;
+        .error-content h2 {
+            font-family: var(--font-body);
             font-size: 24px;
+            margin-bottom: var(--spacing-md);
         }
 
-        p {
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        a {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: transform 0.2s;
-        }
-
-        a:hover {
-            transform: translateY(-2px);
+        .error-content p {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xl);
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>404</h1>
-    <h2>Page Not Found</h2>
-    <p>The page you're looking for doesn't exist. It may have been moved or deleted.</p>
-    <a href="${pageContext.request.contextPath}/">← Back to Home</a>
+
+<jsp:include page="/WEB-INF/views/partials/header.jsp" />
+
+<div class="container error-page">
+    <div class="error-content">
+        <h1>404</h1>
+        <h2>Page Not Found</h2>
+        <p>The page you're looking for doesn't exist. It may have been moved or deleted.</p>
+        <a href="${pageContext.request.contextPath}/" class="btn btn-primary">Return to Home</a>
+    </div>
 </div>
+
+<jsp:include page="/WEB-INF/views/partials/footer.jsp" />
 </body>
 </html>

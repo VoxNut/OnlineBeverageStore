@@ -46,6 +46,17 @@ public class ProductDAO {
     }
 
     /**
+     * Create a new product from a fully constructed Product object (used by DatabaseSeeder)
+     */
+    public void createProduct(Product product) throws ExecutionException, InterruptedException {
+        db.collection(COLLECTION_NAME)
+                .document(product.getProductId())
+                .set(product)
+                .get();
+        logger.info("Product created from object: {} ({})", product.getName(), product.getProductId());
+    }
+
+    /**
      * Get product by ID
      */
     public Product getProductById(String productId) throws ExecutionException, InterruptedException {

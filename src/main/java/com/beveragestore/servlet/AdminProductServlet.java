@@ -1,6 +1,7 @@
 package com.beveragestore.servlet;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.servlet.ServletException;
@@ -12,12 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.beveragestore.dao.ProductDAO;
+import com.beveragestore.model.Product;
 import com.beveragestore.util.SessionUtil;
 
-/**
- * Admin Product Management servlet.
- * Handles product CRUD operations (Create, Read, Update, Delete/Deactivate).
- */
 public class AdminProductServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(AdminProductServlet.class);
     private ProductDAO productDAO;
@@ -31,56 +29,100 @@ public class AdminProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // Verify user is admin
             if (!SessionUtil.isAdmin(request.getSession())) {
                 response.sendRedirect(request.getContextPath() + "/");
                 return;
             }
 
-            // Get all products (including inactive ones for admin view)
-            var products = productDAO.getAllProducts();
-            request.setAttribute("products", products);
+            String action = request.getParameter("action");
 
+            if ("create".equals(action)) {
+                // Show create form
+                request.setAttribute("mode", "create");
+                request.getRequestDispatcher("/WEB-INF/views/admin/product-form.jsp").forward(request, response);
+                return;
+            } else if ("edit".equals(action)) {
+                String productId = request.getParameter("id");
+                if (productId != null) {
+                    Product product = productDAO.getProductById(productId);
+                    if (product != null) {
+                        request.setAttribute("product", product);
+                        request.setAttribute("mode", "edit");
+                        request.getRequestDispatcher("/WEB-INF/views/admin/product-form.jsp").forward(request, response);
+                        return;
+                    }
+                }
+            }
+
+            // Default: List all products
+            List<Product> products = productDAO.getAllProducts();
+            request.setAttribute("products", products);
             request.getRequestDispatcher("/WEB-INF/views/admin/products.jsp").forward(request, response);
 
         } catch (ExecutionException | InterruptedException e) {
-            logger.error("Error loading products for admin", e);
+            logger.error("Error loading products", e);
             request.setAttribute("error", "Error loading products. Please try again.");
-            try {
-                request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
-            } catch (ServletException | IOException ex) {
-                logger.error("Error forwarding to error page", ex);
-            }
+            request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // Verify user is admin
             if (!SessionUtil.isAdmin(request.getSession())) {
-                response.sendError(403, "Forbidden");
+                response.sendRedirect(request.getContextPath() + "/");
                 return;
             }
 
             String action = request.getParameter("action");
 
-            if ("deactivate".equals(action)) {
+            if ("create".equals(action)) {
+                String name = request.getParameter("name");
+                String category = request.getParameter("category");
+                String brand = request.getParameter("brand");
+                String description = request.getParameter("description");
+                double price = Double.parseDouble(request.getParameter("price"));
+                int stock = Integer.parseInt(request.getParameter("stock"));
+                String imageUrl = request.getParameter("imageUrl");
+
+                productDAO.createProduct(name, category, brand, description, price, stock, imageUrl);
+                response.sendRedirect(request.getContextPath() + "/admin/products?success=Product created successfully");
+
+            } else if ("update".equals(action)) {
                 String productId = request.getParameter("productId");
-                productDAO.deactivateProduct(productId);
-                logger.info("Product deactivated: {}", productId);
+                Product product = productDAO.getProductById(productId);
+                
+                if (product != null) {
+                    product.setName(request.getParameter("name"));
+                    product.setCategory(request.getParameter("category"));
+                    product.setBrand(request.getParameter("brand"));
+                    product.setDescription(request.getParameter("description"));
+                    product.setPrice(Double.parseDouble(request.getParameter("price")));
+                    product.setStock(Integer.parseInt(request.getParameter("stock")));
+                    product.setImageUrl(request.getParameter("imageUrl"));
+                    product.setActive("on".equals(request.getParameter("isActive")));
+
+                    productDAO.updateProduct(product);
+                    response.sendRedirect(request.getContextPath() + "/admin/products?success=Product updated successfully");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/admin/products?error=Product not found");
+                }
+
+            } else if ("toggle_status".equals(action)) {
+                String productId = request.getParameter("productId");
+                Product product = productDAO.getProductById(productId);
+                if (product != null) {
+                    product.setActive(!product.isActive());
+                    productDAO.updateProduct(product);
+                    response.sendRedirect(request.getContextPath() + "/admin/products?success=Product status updated");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/admin/products?error=Product not found");
+                }
             }
 
-            response.sendRedirect(request.getContextPath() + "/admin/products");
-
-        } catch (ExecutionException | InterruptedException e) {
-            logger.error("Error processing product action", e);
-            request.setAttribute("error", "Error processing request. Please try again.");
-            try {
-                request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
-            } catch (ServletException | IOException ex) {
-                logger.error("Error forwarding to error page", ex);
-            }
+        } catch (Exception e) {
+            logger.error("Error saving product", e);
+            response.sendRedirect(request.getContextPath() + "/admin/products?error=Failed to save product. Please check the inputs.");
         }
     }
 }

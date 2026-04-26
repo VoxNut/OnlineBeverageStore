@@ -43,9 +43,15 @@ public class AdminDashboardServlet extends HttpServlet {
             // Get dashboard statistics
             long totalOrders = orderDAO.getTotalOrdersCount();
             double totalRevenue = orderDAO.getTotalRevenue();
+            
+            com.beveragestore.dao.UserDAO userDAO = new com.beveragestore.dao.UserDAO();
+            int totalUsers = userDAO.getAllUsers().size();
+            int lowStockCount = productDAO.getLowStockProducts().size();
 
             request.setAttribute("totalOrders", totalOrders);
             request.setAttribute("totalRevenue", totalRevenue);
+            request.setAttribute("totalUsers", totalUsers);
+            request.setAttribute("lowStockCount", lowStockCount);
 
             request.getRequestDispatcher("/WEB-INF/views/admin/dashboard.jsp").forward(request, response);
 

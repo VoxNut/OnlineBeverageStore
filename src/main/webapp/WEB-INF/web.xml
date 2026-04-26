@@ -184,6 +184,16 @@
         <url-pattern>/admin/orders</url-pattern>
     </servlet-mapping>
 
+    <!-- Admin Users Management -->
+    <servlet>
+        <servlet-name>AdminUserServlet</servlet-name>
+        <servlet-class>com.beveragestore.servlet.AdminUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminUserServlet</servlet-name>
+        <url-pattern>/admin/users</url-pattern>
+    </servlet-mapping>
+
     <!-- ========== ERROR PAGES ========== -->
 
     <error-page>

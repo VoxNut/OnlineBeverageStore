@@ -49,6 +49,22 @@ public class SessionUtil {
     }
 
     /**
+     * Check if logged-in user is a shipper
+     */
+    public static boolean isShipper(HttpSession session) {
+        User user = getUserFromSession(session);
+        return user != null && user.isShipper();
+    }
+
+    /**
+     * Check if logged-in user is a shop owner
+     */
+    public static boolean isShopOwner(HttpSession session) {
+        User user = getUserFromSession(session);
+        return user != null && user.isShopOwner();
+    }
+
+    /**
      * Get user ID from session
      */
     public static String getUserId(HttpSession session) {

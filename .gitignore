@@ -22,5 +22,5 @@ Thumbs.db
 *.swp
 *.swo
 *~
-serviceAccountKey.json
 target/
+src/main/resources/

@@ -4,171 +4,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Online Beverage Store</title>
+    <title>Admin Dashboard - The Grindery</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .admin-container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: var(--spacing-xl);
+            min-height: calc(100vh - 200px);
+            margin-bottom: var(--spacing-xxl);
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+        .admin-sidebar {
+            background: var(--bg-white);
+            border-right: 1px solid var(--border-color);
+            padding: var(--spacing-lg) 0;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            align-self: start;
         }
 
-        nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 0;
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .admin-nav {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .admin-nav a {
+            padding: var(--spacing-md) var(--spacing-lg);
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
         }
 
-        .page-header {
-            background: white;
-            padding: 30px 0;
-            margin-bottom: 30px;
+        .admin-nav a:hover, .admin-nav a.active {
+            color: var(--accent-primary);
+            background: var(--bg-secondary);
+            border-left-color: var(--accent-primary);
         }
 
-        .page-header h1 {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .admin-content {
+            padding: var(--spacing-lg) 0;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
         }
 
         .stat-card {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            background: var(--bg-white);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
             text-align: center;
         }
 
         .stat-label {
-            color: #999;
-            font-size: 14px;
-            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
         }
 
         .stat-value {
+            font-family: var(--font-heading);
             font-size: 36px;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
+            color: var(--text-primary);
         }
 
         .stat-card.revenue .stat-value {
-            color: #27ae60;
+            color: var(--success-text);
+        }
+        
+        .stat-card.warning .stat-value {
+            color: var(--error-text);
         }
 
-        .admin-links {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        .quick-actions {
+            background: var(--bg-white);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
         }
 
-        .admin-links h3 {
-            margin-bottom: 20px;
+        .quick-actions h3 {
+            font-family: var(--font-body);
+            margin-bottom: var(--spacing-lg);
         }
 
-        .link-grid {
+        .action-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--spacing-md);
         }
 
-        .admin-btn {
-            padding: 15px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .admin-btn:hover {
-            background: #764ba2;
-        }
-
-        footer {
-            background: #333;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-            margin-top: 60px;
+        @media (max-width: 768px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-<nav>
-    <div class="container">
-        <div onclick="window.location='${pageContext.request.contextPath}/'" style="cursor: pointer; color: white; font-weight: bold;">🧃 BeverageStore</div>
-        <div>
-            <a href="${pageContext.request.contextPath}/products" style="color: white; text-decoration: none; margin: 0 15px;">View Store</a>
-            <a href="${pageContext.request.contextPath}/logout" style="color: white; text-decoration: none; margin: 0 15px;">Logout</a>
-        </div>
-    </div>
-</nav>
 
-<div class="page-header">
+<jsp:include page="/WEB-INF/views/partials/header.jsp" />
+
+<div class="page-header" style="text-align:center; padding: var(--spacing-xl) 0 var(--spacing-md);">
     <div class="container">
-        <h1>🛠️ Admin Dashboard</h1>
+        <h1>Admin Portal</h1>
     </div>
 </div>
 
-<div class="container">
-    <!-- Statistics -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-label">Total Orders</div>
-            <div class="stat-value"><%= request.getAttribute("totalOrders") %></div>
-            <p style="color: #666; font-size: 14px;">All time</p>
-        </div>
-        <div class="stat-card revenue">
-            <div class="stat-label">Total Revenue</div>
-            <div class="stat-value">$<%= String.format("%.2f", (double) request.getAttribute("totalRevenue")) %></div>
-            <p style="color: #666; font-size: 14px;">All time</p>
-        </div>
+<div class="container admin-container">
+    <div class="admin-sidebar">
+        <nav class="admin-nav">
+            <a href="${pageContext.request.contextPath}/admin/dashboard" class="active">Dashboard</a>
+            <a href="${pageContext.request.contextPath}/admin/orders">Manage Orders</a>
+            <a href="${pageContext.request.contextPath}/admin/products">Manage Products</a>
+            <a href="${pageContext.request.contextPath}/admin/users">Manage Users</a>
+        </nav>
     </div>
 
-    <!-- Admin Links -->
-    <div class="admin-links">
-        <h3>Management Tools</h3>
-        <div class="link-grid">
-            <a href="${pageContext.request.contextPath}/admin/products" class="admin-btn">📦 Manage Products</a>
-            <a href="${pageContext.request.contextPath}/admin/orders" class="admin-btn">📋 Manage Orders</a>
-            <a href="${pageContext.request.contextPath}/admin/products?action=create" class="admin-btn">➕ Add New Product</a>
+    <div class="admin-content">
+        <h2 style="font-family: var(--font-body); margin-bottom: var(--spacing-lg);">Overview</h2>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Orders</div>
+                <div class="stat-value"><%= request.getAttribute("totalOrders") %></div>
+            </div>
+            <div class="stat-card revenue">
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value">$<%= String.format("%.2f", (double) request.getAttribute("totalRevenue")) %></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Registered Users</div>
+                <div class="stat-value"><%= request.getAttribute("totalUsers") %></div>
+            </div>
+            <div class="stat-card <% if ((int)request.getAttribute("lowStockCount") > 0) { %>warning<% } %>">
+                <div class="stat-label">Low Stock Items</div>
+                <div class="stat-value"><%= request.getAttribute("lowStockCount") %></div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="action-grid">
+                <a href="${pageContext.request.contextPath}/admin/products?action=create" class="btn btn-primary" style="text-align:center;">Add New Product</a>
+                <a href="${pageContext.request.contextPath}/admin/orders" class="btn btn-secondary" style="text-align:center;">View Pending Orders</a>
+            </div>
         </div>
     </div>
 </div>
 
-<footer>
-    <p>&copy; 2026 Online Beverage Store - Admin Panel</p>
-</footer>
+<jsp:include page="/WEB-INF/views/partials/footer.jsp" />
 </body>
 </html>

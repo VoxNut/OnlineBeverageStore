@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.beveragestore.model.Product" %>
+<%@ page import="com.beveragestore.model.User" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Products - The Grindery Admin</title>
+    <title>Manage Users - The Grindery Admin</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,12 +86,19 @@
             font-size: 14px;
         }
 
-        .product-image {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 4px;
+        .role-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
         }
+
+        .role-admin { background: #e3f2fd; color: #1976d2; }
+        .role-customer { background: #f5f5f5; color: #616161; }
+        .role-shipper { background: #fff3e0; color: #f57c00; }
+        .role-shop_owner { background: #e8f5e9; color: #388e3c; }
 
         .status-badge {
             display: inline-block;
@@ -103,19 +110,18 @@
 
         .status-active { background: #e8f5e9; color: #388e3c; }
         .status-inactive { background: #ffebee; color: #d32f2f; }
-        .stock-low { color: #d32f2f; font-weight: 600; }
 
-        .action-links a, .action-links button {
-            display: inline-block;
-            margin-right: 10px;
-            font-size: 13px;
+        .action-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .header-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-lg);
+        select.form-control {
+            padding: 6px 12px;
+            font-size: 13px;
+            width: auto;
+            display: inline-block;
         }
 
         @media (max-width: 768px) {
@@ -131,7 +137,7 @@
 
 <div class="page-header" style="text-align:center; padding: var(--spacing-xl) 0 var(--spacing-md);">
     <div class="container">
-        <h1>Manage Products</h1>
+        <h1>Manage Users</h1>
     </div>
 </div>
 
@@ -140,8 +146,8 @@
         <nav class="admin-nav">
             <a href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
             <a href="${pageContext.request.contextPath}/admin/orders">Manage Orders</a>
-            <a href="${pageContext.request.contextPath}/admin/products" class="active">Manage Products</a>
-            <a href="${pageContext.request.contextPath}/admin/users">Manage Users</a>
+            <a href="${pageContext.request.contextPath}/admin/products">Manage Products</a>
+            <a href="${pageContext.request.contextPath}/admin/users" class="active">Manage Users</a>
         </nav>
     </div>
 
@@ -154,57 +160,52 @@
             <div id="server-error-msg" style="display:none;"><%= error %></div>
         <% } %>
 
-        <div class="header-actions">
-            <h2 style="font-family: var(--font-body);">All Products</h2>
-            <a href="${pageContext.request.contextPath}/admin/products?action=create" class="btn btn-primary">Add New Product</a>
-        </div>
-
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Image</th>
                         <th>Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
+                        <th>Email</th>
+                        <th>Role</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% List<Product> products = (List<Product>) request.getAttribute("products");
-                       if (products != null && !products.isEmpty()) {
-                           for (Product p : products) {
+                    <% List<User> users = (List<User>) request.getAttribute("users");
+                       if (users != null && !users.isEmpty()) {
+                           for (User u : users) {
                     %>
                     <tr>
+                        <td><%= u.getFullName() != null ? u.getFullName() : "N/A" %></td>
+                        <td><%= u.getEmail() %></td>
                         <td>
-                            <% if (p.getImageUrl() != null && !p.getImageUrl().isEmpty()) { %>
-                                <img src="<%= p.getImageUrl() %>" class="product-image" alt="Product">
-                            <% } else { %>
-                                <div class="product-image" style="background:#eee; display:flex; align-items:center; justify-content:center;">☕</div>
-                            <% } %>
-                        </td>
-                        <td style="font-weight: 500;"><%= p.getName() %></td>
-                        <td><%= p.getCategory() %></td>
-                        <td>$<%= String.format("%.2f", p.getPrice()) %></td>
-                        <td>
-                            <span class="<%= p.getStock() < 10 ? "stock-low" : "" %>"><%= p.getStock() %></span>
+                            <span class="role-badge role-<%= u.getRole() %>"><%= u.getRole() %></span>
                         </td>
                         <td>
-                            <% if (p.isActive()) { %>
+                            <% if (u.isActive()) { %>
                                 <span class="status-badge status-active">Active</span>
                             <% } else { %>
                                 <span class="status-badge status-inactive">Inactive</span>
                             <% } %>
                         </td>
-                        <td class="action-links">
-                            <a href="${pageContext.request.contextPath}/admin/products?action=edit&id=<%= p.getProductId() %>" style="color:var(--accent-primary);">Edit</a>
-                            <form method="POST" action="${pageContext.request.contextPath}/admin/products" style="display:inline;">
+                        <td>
+                            <form method="POST" action="${pageContext.request.contextPath}/admin/users" class="action-form" style="margin-bottom: 8px;">
+                                <input type="hidden" name="action" value="update_role">
+                                <input type="hidden" name="uid" value="<%= u.getUid() %>">
+                                <select name="role" class="form-control">
+                                    <option value="customer" <%= "customer".equals(u.getRole()) ? "selected" : "" %>>Customer</option>
+                                    <option value="admin" <%= "admin".equals(u.getRole()) ? "selected" : "" %>>Admin</option>
+                                    <option value="shipper" <%= "shipper".equals(u.getRole()) ? "selected" : "" %>>Shipper</option>
+                                    <option value="shop_owner" <%= "shop_owner".equals(u.getRole()) ? "selected" : "" %>>Shop Owner</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">Update</button>
+                            </form>
+                            <form method="POST" action="${pageContext.request.contextPath}/admin/users" class="action-form">
                                 <input type="hidden" name="action" value="toggle_status">
-                                <input type="hidden" name="productId" value="<%= p.getProductId() %>">
-                                <button type="submit" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; text-decoration:underline;">
-                                    <%= p.isActive() ? "Deactivate" : "Activate" %>
+                                <input type="hidden" name="uid" value="<%= u.getUid() %>">
+                                <button type="submit" class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">
+                                    <%= u.isActive() ? "Deactivate" : "Activate" %>
                                 </button>
                             </form>
                         </td>
@@ -212,7 +213,7 @@
                     <%      }
                        } else { %>
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 40px;">No products found.</td>
+                        <td colspan="5" style="text-align: center; padding: 40px;">No users found.</td>
                     </tr>
                     <% } %>
                 </tbody>

@@ -61,6 +61,17 @@ public class UserDAO {
     }
 
     /**
+     * Create a user from a fully constructed User object (used by DatabaseSeeder)
+     */
+    public void createUser(User user) throws ExecutionException, InterruptedException {
+        db.collection(COLLECTION_NAME)
+                .document(user.getUid())
+                .set(user)
+                .get();
+        logger.info("User created from object: {}", user.getEmail());
+    }
+
+    /**
      * Find or create a user from Google Sign-In.
      * If a user with the same email exists, link the Google account.
      * If no user exists, create a new one with Google provider.

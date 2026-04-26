@@ -88,9 +88,9 @@ public class LoginServlet extends HttpServlet {
 
             // Redirect based on role
             if (user.isAdmin()) {
-                response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+                response.sendRedirect(request.getContextPath() + "/admin/dashboard?msg=login");
             } else {
-                response.sendRedirect(request.getContextPath() + "/");
+                response.sendRedirect(request.getContextPath() + "/?msg=login");
             }
 
         } catch (ExecutionException | InterruptedException e) {

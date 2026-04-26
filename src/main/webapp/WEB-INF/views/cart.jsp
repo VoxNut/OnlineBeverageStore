@@ -7,266 +7,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - Online Beverage Store</title>
+    <title>Your Cart - The Grindery</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-        }
-
-        nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 0;
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-        }
-
         .page-header {
-            background: white;
-            padding: 30px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            padding: var(--spacing-xl) 0;
         }
 
         .page-header h1 {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+            font-size: 32px;
+            text-align: center;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .cart-content {
+        .cart-layout {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xxl);
+            align-items: start;
         }
 
-        @media (max-width: 768px) {
-            .cart-content {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 900px) {
+            .cart-layout { grid-template-columns: 1fr; }
         }
 
-        .cart-items {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        .cart-items-container {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
         }
 
         .cart-item {
             display: grid;
-            grid-template-columns: 100px 1fr 150px 100px 50px;
-            gap: 20px;
+            grid-template-columns: 100px 1fr 120px 100px 40px;
+            gap: var(--spacing-md);
             align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #eee;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .cart-item:last-child {
             border-bottom: none;
         }
 
+        @media (max-width: 600px) {
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                grid-template-areas: 
+                    "img info"
+                    "img price"
+                    "qty remove";
+            }
+            .item-image { grid-area: img; }
+            .item-details { grid-area: info; }
+            .item-price { grid-area: price; }
+            .item-qty-form { grid-area: qty; }
+            .item-remove-form { grid-area: remove; justify-self: end; }
+        }
+
         .item-image {
-            width: 100px;
-            height: 100px;
-            background: #f0f0f0;
-            border-radius: 5px;
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--bg-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            overflow: hidden;
+            padding: var(--spacing-sm);
+            border-radius: 4px;
         }
 
         .item-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            mix-blend-mode: multiply;
         }
 
         .item-details h3 {
-            margin-bottom: 5px;
+            font-size: 16px;
+            margin-bottom: 4px;
+            font-family: var(--font-body);
+            font-weight: 600;
         }
 
         .item-details p {
-            color: #666;
-            font-size: 14px;
+            color: var(--text-secondary);
+            font-size: 13px;
         }
 
         .item-price {
-            font-weight: 600;
-            color: #667eea;
+            font-weight: 500;
+            font-size: 16px;
         }
 
-        .item-quantity {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .item-quantity input {
-            width: 50px;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
+        .qty-input {
+            width: 60px;
+            padding: 8px;
             text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
         }
 
-        .item-remove {
-            background: #ff6b6b;
-            color: white;
+        .btn-remove {
+            background: none;
             border: none;
-            padding: 8px 12px;
-            border-radius: 3px;
+            color: var(--text-light);
             cursor: pointer;
+            padding: 8px;
+            transition: color 0.2s;
         }
 
-        .item-remove:hover {
-            background: #ff5252;
+        .btn-remove:hover {
+            color: var(--error-text);
         }
 
         .empty-cart {
             text-align: center;
-            padding: 60px 20px;
-            color: #999;
+            padding: var(--spacing-xxl) var(--spacing-lg);
         }
 
         .empty-cart h2 {
-            margin-bottom: 20px;
-        }
-
-        .empty-cart a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-secondary);
+            font-family: var(--font-body);
         }
 
         .cart-summary {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            height: fit-content;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-xl);
+        }
+
+        .cart-summary h3 {
+            font-size: 18px;
+            margin-bottom: var(--spacing-lg);
+            font-family: var(--font-body);
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .summary-row:last-child {
-            border-bottom: none;
+            margin-bottom: var(--spacing-md);
+            font-size: 14px;
+            color: var(--text-secondary);
         }
 
         .summary-total {
             display: flex;
             justify-content: space-between;
-            font-size: 20px;
-            font-weight: bold;
-            color: #667eea;
-            padding-top: 15px;
-            border-top: 2px solid #667eea;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            padding: 15px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+            font-size: 18px;
             font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
+            color: var(--text-primary);
         }
 
-        .checkout-btn:hover {
-            background: #764ba2;
-        }
-
-        .continue-shopping {
-            width: 100%;
-            padding: 12px;
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        footer {
-            background: #333;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-            margin-top: 60px;
+        .summary-actions {
+            margin-top: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
         }
     </style>
 </head>
 <body>
-<nav>
-    <div class="container">
-        <div class="logo" onclick="window.location='${pageContext.request.contextPath}/'">🧃 BeverageStore</div>
-        <div>
-            <a href="${pageContext.request.contextPath}/products">Shop</a>
-            <a href="${pageContext.request.contextPath}/customer/orders">Orders</a>
-            <a href="${pageContext.request.contextPath}/logout">Logout</a>
-        </div>
-    </div>
-</nav>
+
+<jsp:include page="/WEB-INF/views/partials/header.jsp" />
 
 <div class="page-header">
     <div class="container">
-        <h1>🛒 Shopping Cart</h1>
+        <h1>Your Cart</h1>
     </div>
 </div>
 
 <div class="container">
-    <div class="cart-content">
-        <div class="cart-items">
+    <div class="cart-layout">
+        <div class="cart-items-container">
             <%
                 List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
                 if (cartItems != null && !cartItems.isEmpty()) {
@@ -275,83 +201,79 @@
             <div class="cart-item">
                 <div class="item-image">
                     <% if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) { %>
-                    <img src="<%= item.getImageUrl() %>" alt="<%= item.getName() %>">
+                        <img src="<%= item.getImageUrl() %>" alt="<%= item.getName() %>">
                     <% } else { %>
-                    🧃
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--border-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
                     <% } %>
                 </div>
                 <div class="item-details">
                     <h3><%= item.getName() %></h3>
-                    <p>Price: $<%= String.format("%.2f", item.getPrice()) %></p>
+                    <p>$<%= String.format("%.2f", item.getPrice()) %> each</p>
                 </div>
                 <div class="item-price">$<%= String.format("%.2f", item.getSubtotal()) %></div>
-                <form method="POST" action="${pageContext.request.contextPath}/customer/cart" style="display: contents;">
+                <form method="POST" action="${pageContext.request.contextPath}/customer/cart" class="item-qty-form" style="display: contents;">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="productId" value="<%= item.getProductId() %>">
-                    <div class="item-quantity">
-                        <input type="number" name="quantity" value="<%= item.getQuantity() %>" min="1" max="999" onchange="this.form.submit();">
-                    </div>
+                    <input type="number" name="quantity" class="qty-input" value="<%= item.getQuantity() %>" min="1" max="999" onchange="this.form.submit();">
                 </form>
-                <form method="POST" action="${pageContext.request.contextPath}/customer/cart" style="display: contents;">
+                <form method="POST" action="${pageContext.request.contextPath}/customer/cart" class="item-remove-form" style="display: contents;">
                     <input type="hidden" name="action" value="remove">
                     <input type="hidden" name="productId" value="<%= item.getProductId() %>">
-                    <button type="submit" class="item-remove">Remove</button>
+                    <button type="submit" class="btn-remove" title="Remove Item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
                 </form>
             </div>
             <% } %>
-
-            <%
-                } else {
-            %>
+            <% } else { %>
             <div class="empty-cart">
-                <h2>Your cart is empty</h2>
-                <p>Start shopping to add items to your cart</p>
-                <a href="${pageContext.request.contextPath}/products">Continue Shopping</a>
+                <h2>Your cart is currently empty.</h2>
+                <a href="${pageContext.request.contextPath}/products" class="btn btn-primary" style="margin-top: var(--spacing-md);">Shop Now</a>
             </div>
             <% } %>
         </div>
 
         <% if (cartItems != null && !cartItems.isEmpty()) { %>
         <div class="cart-summary">
-            <h3 style="margin-bottom: 20px;">Order Summary</h3>
+            <h3>Order Summary</h3>
 
             <div class="summary-row">
-                <span>Subtotal:</span>
+                <span>Subtotal</span>
                 <span>$<%= String.format("%.2f", request.getAttribute("cartTotal")) %></span>
             </div>
 
             <div class="summary-row">
-                <span>Shipping:</span>
-                <span>Free</span>
+                <span>Shipping</span>
+                <span>Calculated at checkout</span>
             </div>
 
             <div class="summary-row">
-                <span>Tax (estimated):</span>
+                <span>Estimated Tax (8%)</span>
                 <span>$<%= String.format("%.2f", ((double) request.getAttribute("cartTotal") * 0.08)) %></span>
             </div>
 
             <div class="summary-total">
-                <span>Total:</span>
+                <span>Total</span>
                 <span>$<%= String.format("%.2f", ((double) request.getAttribute("cartTotal") * 1.08)) %></span>
             </div>
 
-            <form method="GET" action="${pageContext.request.contextPath}/customer/checkout" style="display: contents;">
-                <button type="submit" class="checkout-btn">Proceed to Checkout</button>
-            </form>
-
-            <button type="button" class="continue-shopping" onclick="window.location='${pageContext.request.contextPath}/products'">Continue Shopping</button>
-
-            <form method="POST" action="${pageContext.request.contextPath}/customer/cart" style="display: contents;">
-                <input type="hidden" name="action" value="clear">
-                <button type="submit" class="continue-shopping" style="background: #ffe0e0; color: #ff6b6b; border-color: #ff6b6b; margin-top: 10px;">Clear Cart</button>
-            </form>
+            <div class="summary-actions">
+                <form method="GET" action="${pageContext.request.contextPath}/customer/checkout" style="display: contents;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Checkout</button>
+                </form>
+                
+                <button type="button" class="btn btn-secondary" onclick="window.location='${pageContext.request.contextPath}/products'" style="width: 100%;">Continue Shopping</button>
+                
+                <form method="POST" action="${pageContext.request.contextPath}/customer/cart" style="display: contents;">
+                    <input type="hidden" name="action" value="clear">
+                    <button type="submit" style="background: none; border: none; color: var(--text-light); text-decoration: underline; margin-top: var(--spacing-md); cursor: pointer; font-family: var(--font-body); font-size: 13px;">Clear Cart</button>
+                </form>
+            </div>
         </div>
         <% } %>
     </div>
 </div>
 
-<footer>
-    <p>&copy; 2026 Online Beverage Store. All rights reserved.</p>
-</footer>
+<jsp:include page="/WEB-INF/views/partials/footer.jsp" />
 </body>
 </html>

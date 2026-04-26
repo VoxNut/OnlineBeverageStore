@@ -7,260 +7,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Online Beverage Store</title>
+    <title>Checkout - The Grindery</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-        }
-
-        nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 0;
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            text-decoration: none;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-        }
-
         .page-header {
-            background: white;
-            padding: 30px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            padding: var(--spacing-xl) 0;
+            text-align: center;
         }
 
         .page-header h1 {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+            font-size: 32px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .checkout-content {
+        .checkout-layout {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xxl);
+            align-items: start;
         }
 
-        @media (max-width: 768px) {
-            .checkout-content {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 900px) {
+            .checkout-layout { grid-template-columns: 1fr; }
+            .checkout-summary { grid-row: 1; } /* Mobile: show summary first */
         }
 
-        .checkout-form {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        .checkout-form-container {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-xl);
+            border: 1px solid var(--border-color);
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .checkout-form-container h2 {
+            font-size: 20px;
+            margin-bottom: var(--spacing-lg);
+            font-family: var(--font-body);
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .form-group textarea {
+        textarea.form-control {
             min-height: 100px;
             resize: vertical;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.2);
+        .checkout-summary {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-xl);
         }
 
-        .error-message {
-            background-color: #fee;
-            color: #c33;
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border-left: 4px solid #c33;
-        }
-
-        .order-summary {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            height: fit-content;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        .checkout-summary h3 {
+            font-size: 18px;
+            margin-bottom: var(--spacing-lg);
+            font-family: var(--font-body);
         }
 
         .summary-items {
-            margin-bottom: 20px;
-            max-height: 400px;
-            overflow-y: auto;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .summary-item {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
             font-size: 14px;
         }
 
-        .summary-item:last-child {
-            border-bottom: none;
+        .item-name {
+            color: var(--text-secondary);
+        }
+
+        .item-price {
+            font-weight: 500;
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: var(--spacing-sm);
+            font-size: 14px;
+            color: var(--text-secondary);
         }
 
         .summary-total {
             display: flex;
             justify-content: space-between;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
             font-size: 18px;
-            font-weight: bold;
-            color: #667eea;
-            padding-top: 10px;
-            border-top: 2px solid #667eea;
-        }
-
-        .place-order-btn {
-            width: 100%;
-            padding: 15px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
             font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .place-order-btn:hover {
-            background: #764ba2;
+            color: var(--text-primary);
         }
 
         .back-link {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .back-link a {
-            color: #667eea;
-            text-decoration: none;
+            display: inline-block;
+            margin-top: var(--spacing-md);
+            color: var(--text-secondary);
             font-size: 14px;
         }
-
-        footer {
-            background: #333;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-            margin-top: 60px;
-        }
+        
+        .back-link:hover { color: var(--text-primary); }
     </style>
 </head>
 <body>
-<nav>
-    <div class="container">
-        <a href="${pageContext.request.contextPath}/" class="logo">🧃 BeverageStore</a>
-        <div>
-            <a href="${pageContext.request.contextPath}/products">Shop</a>
-            <a href="${pageContext.request.contextPath}/customer/orders">Orders</a>
-            <a href="${pageContext.request.contextPath}/logout">Logout</a>
-        </div>
-    </div>
-</nav>
+
+<jsp:include page="/WEB-INF/views/partials/header.jsp" />
 
 <div class="page-header">
     <div class="container">
-        <h1>💳 Checkout</h1>
+        <h1>Checkout</h1>
     </div>
 </div>
 
 <div class="container">
     <% String error = (String) request.getAttribute("error");
        if (error != null) { %>
-    <div class="error-message"><%= error %></div>
+    <div id="server-error-msg" style="display:none;"><%= error %></div>
     <% } %>
 
-    <div class="checkout-content">
-        <div class="checkout-form">
-            <h2 style="margin-bottom: 20px;">Shipping Information</h2>
+    <div class="checkout-layout">
+        <!-- Form Section -->
+        <div class="checkout-form-container">
+            <h2>Shipping & Delivery</h2>
 
             <form method="POST" action="${pageContext.request.contextPath}/customer/checkout">
                 <div class="form-group">
-                    <label for="shippingAddress">Shipping Address *</label>
-                    <textarea id="shippingAddress" name="shippingAddress" required placeholder="123 Main St, City, State, ZIP">
-</textarea>
+                    <label for="shippingAddress" class="form-label">Shipping Address *</label>
+                    <textarea id="shippingAddress" name="shippingAddress" class="form-control" required placeholder="123 Coffee St, City, State, ZIP"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="notes">Delivery Notes (Optional)</label>
-                    <textarea id="notes" name="notes" placeholder="Special instructions for delivery...">
-</textarea>
+                    <label for="notes" class="form-label">Delivery Notes (Optional)</label>
+                    <textarea id="notes" name="notes" class="form-control" placeholder="Special instructions for delivery..."></textarea>
                 </div>
 
-                <button type="submit" class="place-order-btn">Place Order</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-md);">Place Order</button>
             </form>
 
-            <div class="back-link">
-                <a href="${pageContext.request.contextPath}/customer/cart">← Back to Cart</a>
-            </div>
+            <a href="${pageContext.request.contextPath}/customer/cart" class="back-link">← Return to Cart</a>
         </div>
 
-        <div class="order-summary">
-            <h3 style="margin-bottom: 20px;">Order Summary</h3>
+        <!-- Summary Section -->
+        <div class="checkout-summary">
+            <h3>Order Summary</h3>
 
             <div class="summary-items">
                 <%
@@ -269,8 +170,8 @@
                         for (CartItem item : cartItems) {
                 %>
                 <div class="summary-item">
-                    <span><%= item.getName() %> (x<%= item.getQuantity() %>)</span>
-                    <span>$<%= String.format("%.2f", item.getSubtotal()) %></span>
+                    <span class="item-name"><%= item.getName() %> (x<%= item.getQuantity() %>)</span>
+                    <span class="item-price">$<%= String.format("%.2f", item.getSubtotal()) %></span>
                 </div>
                 <%
                         }
@@ -279,30 +180,28 @@
             </div>
 
             <div class="summary-row">
-                <span>Subtotal:</span>
+                <span>Subtotal</span>
                 <span>$<%= String.format("%.2f", request.getAttribute("cartTotal")) %></span>
             </div>
 
             <div class="summary-row">
-                <span>Shipping:</span>
+                <span>Shipping</span>
                 <span>Free</span>
             </div>
 
             <div class="summary-row">
-                <span>Tax (8%):</span>
+                <span>Estimated Tax (8%)</span>
                 <span>$<%= String.format("%.2f", ((double) request.getAttribute("cartTotal") * 0.08)) %></span>
             </div>
 
             <div class="summary-total">
-                <span>Total:</span>
+                <span>Total to Pay</span>
                 <span>$<%= String.format("%.2f", ((double) request.getAttribute("cartTotal") * 1.08)) %></span>
             </div>
         </div>
     </div>
 </div>
 
-<footer>
-    <p>&copy; 2026 Online Beverage Store. All rights reserved.</p>
-</footer>
+<jsp:include page="/WEB-INF/views/partials/footer.jsp" />
 </body>
 </html>

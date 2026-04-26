@@ -36,41 +36,44 @@
         </div>
         
         <div class="product-grid">
-            <!-- Mock Product 1 -->
+            <%
+                try {
+                    com.beveragestore.dao.ProductDAO productDAO = new com.beveragestore.dao.ProductDAO();
+                    java.util.List<com.beveragestore.model.Product> products = productDAO.getAllActiveProducts();
+                    
+                    // Show at most 3 products as featured
+                    int count = 0;
+                    for (com.beveragestore.model.Product p : products) {
+                        if (count >= 3) break;
+            %>
             <div class="product-card-small">
-                <div class="product-card-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1559525839-b184a4d698c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Coffee" style="max-height:100%; max-width:100%; object-fit:contain;">
+                <div class="product-card-img-wrap" style="cursor: pointer;" onclick="window.location='${pageContext.request.contextPath}/product?id=<%= p.getProductId() %>'">
+                    <% if (p.getImageUrl() != null && !p.getImageUrl().isEmpty()) { %>
+                        <img src="<%= p.getImageUrl() %>" alt="<%= p.getName() %>" style="max-height:100%; max-width:100%; object-fit:contain;">
+                    <% } else { %>
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--border-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                    <% } %>
                 </div>
                 <div class="product-card-info">
-                    <h3 class="product-card-title">Craft Coffee Bag</h3>
-                    <p class="product-card-desc">High-quality beans for artisanal drinks.</p>
-                    <button class="btn-add">Add to Cart</button>
+                    <h3 class="product-card-title"><%= p.getName() %></h3>
+                    <p class="product-card-desc"><%= p.getDescription() != null && p.getDescription().length() > 50 ? p.getDescription().substring(0, 50) + "..." : p.getDescription() %></p>
+                    <form method="POST" action="${pageContext.request.contextPath}/customer/cart" style="margin-top: auto;">
+                        <input type="hidden" name="action" value="add">
+                        <input type="hidden" name="productId" value="<%= p.getProductId() %>">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn-add">Add to Cart - $<%= String.format("%.2f", p.getPrice()) %></button>
+                    </form>
                 </div>
             </div>
-
-            <!-- Mock Product 2 -->
-            <div class="product-card-small">
-                <div class="product-card-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1594808381830-4e3d3663a75d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Tea" style="max-height:100%; max-width:100%; object-fit:contain;">
-                </div>
-                <div class="product-card-info">
-                    <h3 class="product-card-title">Herbal Tea Jar</h3>
-                    <p class="product-card-desc">Small-batch teas crafted with care.</p>
-                    <button class="btn-add">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Mock Product 3 -->
-            <div class="product-card-small">
-                <div class="product-card-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Kombucha" style="max-height:100%; max-width:100%; object-fit:contain;">
-                </div>
-                <div class="product-card-info">
-                    <h3 class="product-card-title">Kombucha Bottle</h3>
-                    <p class="product-card-desc">Handcrafted refreshing kombucha.</p>
-                    <button class="btn-add">Add to Cart</button>
-                </div>
-            </div>
+            <%
+                        count++;
+                    }
+                } catch (Exception e) {
+            %>
+                <p>Error loading featured products.</p>
+            <%
+                }
+            %>
         </div>
     </section>
 </main>

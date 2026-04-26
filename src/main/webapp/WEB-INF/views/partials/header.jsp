@@ -34,7 +34,7 @@
                         <% if (currentUser.getPhotoUrl() != null && !currentUser.getPhotoUrl().isEmpty()) { %>
                             <img src="<%= currentUser.getPhotoUrl() %>" alt="User Avatar" class="user-avatar">
                         <% } else { %>
-                            <div class="default-avatar"><%= currentUser.getFullName() != null && !currentUser.getFullName().isEmpty() ? currentUser.getFullName().substring(0, 1).toUpperCase() : "U" %></div>
+                            <img src="https://res.cloudinary.com/dbpl94opl/image/upload/v1777211644/ina_drinks_hievr6.jpg" alt="User Avatar Placeholder" class="user-avatar">
                         <% } %>
                     </div>
                     <div class="dropdown-menu" id="userDropdown">
@@ -60,7 +60,7 @@
     </div>
 </header>
 
-<!-- Hidden elements to pass server messages to JS -->
+    <!-- Hidden elements to pass server messages to JS -->
 <% if (request.getAttribute("error") != null) { %>
     <div id="server-error-msg" style="display:none;"><%= request.getAttribute("error") %></div>
 <% } %>

@@ -69,14 +69,9 @@ public class AuthFilter implements Filter {
                 return;
             }
         } else if (path.startsWith("/customer/")) {
-            // Customer-only area
-            if (!loggedInUser.isCustomer()) {
-                logger.warn("Non-customer user attempted to access customer area: {} (user: {})", path, loggedInUser.getEmail());
-                // Return 403 Forbidden
-                httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                httpRequest.getRequestDispatcher("/WEB-INF/views/403.jsp").forward(request, response);
-                return;
-            }
+            // Customer area
+            // Accessible by all authenticated users (including Admins, Shippers, Shop Owners) so they can make purchases
+            // We already verified the user is authenticated above, so no further role check is needed here.
         }
 
         // User is authenticated and authorized - proceed

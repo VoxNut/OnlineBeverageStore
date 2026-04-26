@@ -48,7 +48,7 @@
             flex: 1.2;
             height: 100%;
             min-height: 500px;
-            background-image: url('https://res.cloudinary.com/dbpl94opl/image/upload/f_auto,q_auto/woman-pouring-cold-brew-coffee-glass-woman-pouring-cold-brew-coffee-glass-table-115683701-2583842293_albunj');
+            background-image: url('https://res.cloudinary.com/dbpl94opl/image/upload/v1777211160/Gemini_Generated_Image_7uac5r7uac5r7uac_uiknst.png');
             background-size: cover;
             background-position: center;
         }

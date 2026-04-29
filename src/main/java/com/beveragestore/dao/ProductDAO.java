@@ -34,7 +34,19 @@ public class ProductDAO {
     public Product createProduct(String name, String category, String brand, String description,
                                  double price, int stock, String imageUrl) throws ExecutionException, InterruptedException {
         String productId = UUID.randomUUID().toString();
-        Product product = new Product(productId, name, category, brand, description, price, stock, imageUrl, true);
+        Product product = Product.builder()
+                .productId(productId)
+                .name(name)
+                .category(category)
+                .brand(brand)
+                .description(description)
+                .price(price)
+                .stock(stock)
+                .imageUrl(imageUrl)
+                .isActive(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build();
 
         db.collection(COLLECTION_NAME)
                 .document(productId)

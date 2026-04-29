@@ -61,25 +61,60 @@ public class DatabaseSeeder {
         List<User> seededUsers = new ArrayList<>();
 
         // Create default users for each role
-        User admin = new User(UUID.randomUUID().toString(), "System Admin", "admin@grindery.com", 
-                org.mindrot.jbcrypt.BCrypt.hashpw("admin123", org.mindrot.jbcrypt.BCrypt.gensalt()), 
-                User.ROLE_ADMIN, new Date());
+        User admin = User.builder()
+                .uid(UUID.randomUUID().toString())
+                .fullName("System Admin")
+                .email("admin@grindery.com")
+                .passwordHash(org.mindrot.jbcrypt.BCrypt.hashpw("admin123", org.mindrot.jbcrypt.BCrypt.gensalt()))
+                .role(User.ROLE_ADMIN)
+                .authProvider("local")
+                .createdAt(new Date())
+                .active(true)
+                .build();
         
-        User shopOwner = new User(UUID.randomUUID().toString(), "Shop Owner", "owner@grindery.com", 
-                org.mindrot.jbcrypt.BCrypt.hashpw("owner123", org.mindrot.jbcrypt.BCrypt.gensalt()), 
-                User.ROLE_SHOP_OWNER, new Date());
+        User shopOwner = User.builder()
+                .uid(UUID.randomUUID().toString())
+                .fullName("Shop Owner")
+                .email("owner@grindery.com")
+                .passwordHash(org.mindrot.jbcrypt.BCrypt.hashpw("owner123", org.mindrot.jbcrypt.BCrypt.gensalt()))
+                .role(User.ROLE_SHOP_OWNER)
+                .authProvider("local")
+                .createdAt(new Date())
+                .active(true)
+                .build();
         
-        User shipper = new User(UUID.randomUUID().toString(), "Fast Shipper", "shipper@grindery.com", 
-                org.mindrot.jbcrypt.BCrypt.hashpw("shipper123", org.mindrot.jbcrypt.BCrypt.gensalt()), 
-                User.ROLE_SHIPPER, new Date());
+        User shipper = User.builder()
+                .uid(UUID.randomUUID().toString())
+                .fullName("Fast Shipper")
+                .email("shipper@grindery.com")
+                .passwordHash(org.mindrot.jbcrypt.BCrypt.hashpw("shipper123", org.mindrot.jbcrypt.BCrypt.gensalt()))
+                .role(User.ROLE_SHIPPER)
+                .authProvider("local")
+                .createdAt(new Date())
+                .active(true)
+                .build();
         
-        User customer1 = new User(UUID.randomUUID().toString(), "Alice Customer", "alice@customer.com", 
-                org.mindrot.jbcrypt.BCrypt.hashpw("customer123", org.mindrot.jbcrypt.BCrypt.gensalt()), 
-                User.ROLE_CUSTOMER, new Date());
+        User customer1 = User.builder()
+                .uid(UUID.randomUUID().toString())
+                .fullName("Alice Customer")
+                .email("alice@customer.com")
+                .passwordHash(org.mindrot.jbcrypt.BCrypt.hashpw("customer123", org.mindrot.jbcrypt.BCrypt.gensalt()))
+                .role(User.ROLE_CUSTOMER)
+                .authProvider("local")
+                .createdAt(new Date())
+                .active(true)
+                .build();
 
-        User customer2 = new User(UUID.randomUUID().toString(), "Bob Customer", "bob@customer.com", 
-                org.mindrot.jbcrypt.BCrypt.hashpw("customer123", org.mindrot.jbcrypt.BCrypt.gensalt()), 
-                User.ROLE_CUSTOMER, new Date());
+        User customer2 = User.builder()
+                .uid(UUID.randomUUID().toString())
+                .fullName("Bob Customer")
+                .email("bob@customer.com")
+                .passwordHash(org.mindrot.jbcrypt.BCrypt.hashpw("customer123", org.mindrot.jbcrypt.BCrypt.gensalt()))
+                .role(User.ROLE_CUSTOMER)
+                .authProvider("local")
+                .createdAt(new Date())
+                .active(true)
+                .build();
 
         List<User> usersToCreate = Arrays.asList(admin, shopOwner, shipper, customer1, customer2);
         
@@ -101,33 +136,103 @@ public class DatabaseSeeder {
 
     private static List<Product> seedProducts(ProductDAO productDAO) throws ExecutionException, InterruptedException {
         List<Product> productsToCreate = Arrays.asList(
-            new Product(UUID.randomUUID().toString(), "Ethiopia Yirgacheffe Light Roast", "Coffee", "Grindery Reserve", 
-                "A bright, floral light roast with notes of jasmine and bergamot. Ethically sourced from Yirgacheffe.", 24.00, 50, 
-                "https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/coffee_bag_1.jpg", true),
+            Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .name("Ethiopia Yirgacheffe Light Roast")
+                .category("Coffee")
+                .brand("Grindery Reserve")
+                .description("A bright, floral light roast with notes of jasmine and bergamot. Ethically sourced from Yirgacheffe.")
+                .price(24.00)
+                .stock(50)
+                .imageUrl("https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/coffee_bag_1.jpg")
+                .isActive(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build(),
             
-            new Product(UUID.randomUUID().toString(), "Colombia Supremo Medium Roast", "Coffee", "Grindery Reserve", 
-                "A balanced medium roast featuring notes of chocolate, caramel, and a hint of cherry.", 22.00, 30, 
-                "https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/coffee_bag_2.jpg", true),
+            Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .name("Colombia Supremo Medium Roast")
+                .category("Coffee")
+                .brand("Grindery Reserve")
+                .description("A balanced medium roast featuring notes of chocolate, caramel, and a hint of cherry.")
+                .price(22.00)
+                .stock(30)
+                .imageUrl("https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/coffee_bag_2.jpg")
+                .isActive(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build(),
             
-            new Product(UUID.randomUUID().toString(), "Sumatra Mandheling Dark Roast", "Coffee", "Grindery Reserve", 
-                "Earthy and full-bodied dark roast with low acidity and notes of dark chocolate and spice.", 23.50, 45, 
-                "https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/coffee_bag_3.jpg", true),
+            Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .name("Sumatra Mandheling Dark Roast")
+                .category("Coffee")
+                .brand("Grindery Reserve")
+                .description("Earthy and full-bodied dark roast with low acidity and notes of dark chocolate and spice.")
+                .price(23.50)
+                .stock(45)
+                .imageUrl("https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/coffee_bag_3.jpg")
+                .isActive(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build(),
             
-            new Product(UUID.randomUUID().toString(), "Matcha Ceremonial Grade", "Tea", "Grindery Reserve", 
-                "Premium stone-ground ceremonial matcha from Uji, Japan. Vibrant green color and smooth umami flavor.", 35.00, 20, 
-                "https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/matcha.jpg", true),
+            Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .name("Matcha Ceremonial Grade")
+                .category("Tea")
+                .brand("Grindery Reserve")
+                .description("Premium stone-ground ceremonial matcha from Uji, Japan. Vibrant green color and smooth umami flavor.")
+                .price(35.00)
+                .stock(20)
+                .imageUrl("https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/matcha.jpg")
+                .isActive(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build(),
             
-            new Product(UUID.randomUUID().toString(), "Earl Grey Reserve", "Tea", "Grindery Reserve", 
-                "Classic black tea infused with premium Italian bergamot oil.", 18.00, 60, 
-                "https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/earl_grey.jpg", true),
+            Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .name("Earl Grey Reserve")
+                .category("Tea")
+                .brand("Grindery Reserve")
+                .description("Classic black tea infused with premium Italian bergamot oil.")
+                .price(18.00)
+                .stock(60)
+                .imageUrl("https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/earl_grey.jpg")
+                .isActive(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build(),
 
-            new Product(UUID.randomUUID().toString(), "Chemex Pour-Over Glass Coffeemaker", "Goods", "Chemex", 
-                "The classic 8-cup Chemex pour-over glass coffeemaker. Made of non-porous Borosilicate glass.", 48.00, 15, 
-                "https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/chemex.jpg", true),
+            Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .name("Chemex Pour-Over Glass Coffeemaker")
+                .category("Goods")
+                .brand("Chemex")
+                .description("The classic 8-cup Chemex pour-over glass coffeemaker. Made of non-porous Borosilicate glass.")
+                .price(48.00)
+                .stock(15)
+                .imageUrl("https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/chemex.jpg")
+                .isActive(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build(),
 
-            new Product(UUID.randomUUID().toString(), "Hario V60 Ceramic Dripper", "Goods", "Hario", 
-                "Size 02 ceramic coffee dripper in white. Retains heat to ensure a constant temperature throughout the brewing cycle.", 25.00, 25, 
-                "https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/v60.jpg", true)
+            Product.builder()
+                .productId(UUID.randomUUID().toString())
+                .name("Hario V60 Ceramic Dripper")
+                .category("Goods")
+                .brand("Hario")
+                .description("Size 02 ceramic coffee dripper in white. Retains heat to ensure a constant temperature throughout the brewing cycle.")
+                .price(25.00)
+                .stock(25)
+                .imageUrl("https://res.cloudinary.com/dbpl94opl/image/upload/v1714000000/v60.jpg")
+                .isActive(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build()
         );
 
         List<Product> seededProducts = new ArrayList<>();
@@ -163,32 +268,80 @@ public class DatabaseSeeder {
 
         // Order 1: Alice, PENDING
         List<Order.OrderItem> items1 = new ArrayList<>();
-        items1.add(new Order.OrderItem(products.get(0).getProductId(), products.get(0).getName(), products.get(0).getPrice(), 2, products.get(0).getImageUrl()));
-        items1.add(new Order.OrderItem(products.get(3).getProductId(), products.get(3).getName(), products.get(3).getPrice(), 1, products.get(3).getImageUrl()));
+        items1.add(Order.OrderItem.builder()
+                .productId(products.get(0).getProductId())
+                .productName(products.get(0).getName())
+                .unitPrice(products.get(0).getPrice())
+                .quantity(2)
+                .imageUrl(products.get(0).getImageUrl())
+                .build());
+        items1.add(Order.OrderItem.builder()
+                .productId(products.get(3).getProductId())
+                .productName(products.get(3).getName())
+                .unitPrice(products.get(3).getPrice())
+                .quantity(1)
+                .imageUrl(products.get(3).getImageUrl())
+                .build());
         
         double total1 = items1.stream().mapToDouble(Order.OrderItem::getSubtotal).sum();
-        Order order1 = new Order(UUID.randomUUID().toString(), customer1.getUid(), items1, total1, "123 Alice St, Wonderland");
-        order1.setStatus(Order.STATUS_PENDING);
+        Order order1 = Order.builder()
+                .orderId(UUID.randomUUID().toString())
+                .userId(customer1.getUid())
+                .items(items1)
+                .totalAmount(total1)
+                .shippingAddress("123 Alice St, Wonderland")
+                .status(Order.STATUS_PENDING)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build();
         orderDAO.createOrder(order1);
         logger.info("Created Order 1 (PENDING) for {}", customer1.getEmail());
 
         // Order 2: Bob, PROCESSING
         List<Order.OrderItem> items2 = new ArrayList<>();
-        items2.add(new Order.OrderItem(products.get(5).getProductId(), products.get(5).getName(), products.get(5).getPrice(), 1, products.get(5).getImageUrl()));
+        items2.add(Order.OrderItem.builder()
+                .productId(products.get(5).getProductId())
+                .productName(products.get(5).getName())
+                .unitPrice(products.get(5).getPrice())
+                .quantity(1)
+                .imageUrl(products.get(5).getImageUrl())
+                .build());
         
         double total2 = items2.stream().mapToDouble(Order.OrderItem::getSubtotal).sum();
-        Order order2 = new Order(UUID.randomUUID().toString(), customer2.getUid(), items2, total2, "456 Bob Ave, Builder City");
-        order2.setStatus(Order.STATUS_PROCESSING);
+        Order order2 = Order.builder()
+                .orderId(UUID.randomUUID().toString())
+                .userId(customer2.getUid())
+                .items(items2)
+                .totalAmount(total2)
+                .shippingAddress("456 Bob Ave, Builder City")
+                .status(Order.STATUS_PROCESSING)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build();
         orderDAO.createOrder(order2);
         logger.info("Created Order 2 (PROCESSING) for {}", customer2.getEmail());
 
         // Order 3: Alice, DELIVERED
         List<Order.OrderItem> items3 = new ArrayList<>();
-        items3.add(new Order.OrderItem(products.get(1).getProductId(), products.get(1).getName(), products.get(1).getPrice(), 1, products.get(1).getImageUrl()));
+        items3.add(Order.OrderItem.builder()
+                .productId(products.get(1).getProductId())
+                .productName(products.get(1).getName())
+                .unitPrice(products.get(1).getPrice())
+                .quantity(1)
+                .imageUrl(products.get(1).getImageUrl())
+                .build());
         
         double total3 = items3.stream().mapToDouble(Order.OrderItem::getSubtotal).sum();
-        Order order3 = new Order(UUID.randomUUID().toString(), customer1.getUid(), items3, total3, "123 Alice St, Wonderland");
-        order3.setStatus(Order.STATUS_DELIVERED);
+        Order order3 = Order.builder()
+                .orderId(UUID.randomUUID().toString())
+                .userId(customer1.getUid())
+                .items(items3)
+                .totalAmount(total3)
+                .shippingAddress("123 Alice St, Wonderland")
+                .status(Order.STATUS_DELIVERED)
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build();
         orderDAO.createOrder(order3);
         logger.info("Created Order 3 (DELIVERED) for {}", customer1.getEmail());
     }

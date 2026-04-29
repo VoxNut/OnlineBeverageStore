@@ -150,20 +150,26 @@ public class CheckoutServlet extends HttpServlet {
                 // Step 3: Create order with order items
                 List<Order.OrderItem> orderItems = new ArrayList<>();
                 for (CartItem item : cartItems) {
-                    orderItems.add(new Order.OrderItem(
-                            item.getProductId(),
-                            item.getName(),
-                            item.getPrice(),
-                            item.getQuantity(),
-                            item.getImageUrl()
-                    ));
+                    orderItems.add(Order.OrderItem.builder()
+                            .productId(item.getProductId())
+                            .productName(item.getName())
+                            .unitPrice(item.getPrice())
+                            .quantity(item.getQuantity())
+                            .imageUrl(item.getImageUrl())
+                            .build());
                 }
 
-                Order order = new Order(orderId, userId, orderItems, cartTotal, shippingAddress);
-                order.setNotes(notes);
-                order.setStatus(Order.STATUS_PENDING);
-                order.setCreatedAt(new Date());
-                order.setUpdatedAt(new Date());
+                Order order = Order.builder()
+                        .orderId(orderId)
+                        .userId(userId)
+                        .items(orderItems)
+                        .totalAmount(cartTotal)
+                        .shippingAddress(shippingAddress)
+                        .notes(notes)
+                        .status(Order.STATUS_PENDING)
+                        .createdAt(new Date())
+                        .updatedAt(new Date())
+                        .build();
 
                 transaction.set(db.collection("orders").document(orderId), order);
 

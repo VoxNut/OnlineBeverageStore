@@ -138,7 +138,14 @@ public class CartServlet extends HttpServlet {
                 cartDAO.updateCartItemQuantity(userId, productId, newQuantity);
             } else {
                 // Add new item
-                CartItem cartItem = new CartItem(productId, product.getName(), product.getPrice(), quantity, product.getImageUrl());
+                CartItem cartItem = CartItem.builder()
+                        .productId(productId)
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .quantity(quantity)
+                        .imageUrl(product.getImageUrl())
+                        .addedAt(System.currentTimeMillis())
+                        .build();
                 cartDAO.addOrUpdateCartItem(userId, cartItem);
             }
 

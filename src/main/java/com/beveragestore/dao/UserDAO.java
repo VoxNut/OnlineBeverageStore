@@ -47,8 +47,16 @@ public class UserDAO {
         String uid = UUID.randomUUID().toString();
 
         // Create user object with local auth provider
-        User user = new User(uid, fullName, email, passwordHash, "customer", new Date());
-        user.setAuthProvider("local");
+        User user = User.builder()
+                .uid(uid)
+                .fullName(fullName)
+                .email(email)
+                .passwordHash(passwordHash)
+                .role("customer")
+                .authProvider("local")
+                .createdAt(new Date())
+                .active(true)
+                .build();
 
         // Save to Firestore
         db.collection(COLLECTION_NAME)
@@ -99,7 +107,16 @@ public class UserDAO {
         }
 
         // Create new Google user using Firebase UID as document ID
-        User newUser = new User(firebaseUid, fullName, email, "customer", "google", photoUrl, new Date());
+        User newUser = User.builder()
+                .uid(firebaseUid)
+                .fullName(fullName)
+                .email(email)
+                .role("customer")
+                .authProvider("google")
+                .photoUrl(photoUrl)
+                .createdAt(new Date())
+                .active(true)
+                .build();
 
         // Save to Firestore
         db.collection(COLLECTION_NAME)
